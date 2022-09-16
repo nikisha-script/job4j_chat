@@ -1,5 +1,7 @@
 package ru.job4j.chat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,11 @@ public class Room {
     @JoinTable(name = "users_rooms",
             joinColumns = {@JoinColumn(name = "id_room")},
             inverseJoinColumns = {@JoinColumn(name = "id_user")})
+    @JsonIgnore
     private List<User> users;
+
+    public void adduser(User user) {
+        users.add(user);
+    }
 
 }

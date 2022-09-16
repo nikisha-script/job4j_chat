@@ -7,4 +7,4 @@
 Четыре модели: Person, Role, Room, Message.
 В каждой комнате есть пользователи и список оставленных ими сообщений.
 
-![img.png](utils/dbschema.png)
+![img.png](utils/img.png)
