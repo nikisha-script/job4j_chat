@@ -1,5 +1,6 @@
 package ru.job4j.chat.serivce;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -7,10 +8,9 @@ import org.springframework.stereotype.Service;
 import ru.job4j.chat.entity.User;
 import ru.job4j.chat.store.UserRepository;
 
-import static java.util.Collections.emptyList;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -51,6 +51,8 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), emptyList());
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), user.getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList()));
     }
 }
