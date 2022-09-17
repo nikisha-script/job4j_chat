@@ -1,7 +1,6 @@
 package ru.job4j.chat.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +24,15 @@ public class Room {
 
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "users_rooms",
             joinColumns = {@JoinColumn(name = "id_room")},
             inverseJoinColumns = {@JoinColumn(name = "id_user")})
     @JsonIgnore
     private List<User> users;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "room")
+    private List<Message> messages;
 
     public void adduser(User user) {
         users.add(user);

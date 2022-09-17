@@ -2,6 +2,7 @@ package ru.job4j.chat.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.chat.entity.User;
 import ru.job4j.chat.exception.UserByLoginExistsException;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService service;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserController(UserService service) {
+    public UserController(UserService service, BCryptPasswordEncoder encoder) {
         this.service = service;
+        this.encoder = encoder;
     }
 
     @GetMapping
@@ -38,6 +41,7 @@ public class UserController {
         if (tempUser.isPresent()) {
             throw new UserByLoginExistsException("user with this login already exists");
         }
+        user.setPassword(encoder.encode(user.getPassword()));
         return new ResponseEntity<>(
                 service.save(user),
                 HttpStatus.CREATED

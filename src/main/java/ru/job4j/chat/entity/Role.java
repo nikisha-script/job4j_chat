@@ -23,7 +23,7 @@ public class Role {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
     @JsonIgnore
     private User user;

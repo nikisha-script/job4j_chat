@@ -23,10 +23,15 @@ public class Message {
 
     private String text;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
     @JsonIgnore
     private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_rooms")
+    @JsonIgnore
+    private Room room;
 
 
 }

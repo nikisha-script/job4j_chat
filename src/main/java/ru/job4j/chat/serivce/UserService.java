@@ -1,14 +1,19 @@
 package ru.job4j.chat.serivce;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.job4j.chat.entity.User;
 import ru.job4j.chat.store.UserRepository;
+
+import static java.util.Collections.emptyList;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
 
@@ -38,5 +43,14 @@ public class UserService {
 
     public void delete(Long id) {
         repository.delete(findUserById(id).get());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = repository.findUserByLogin(username).get();
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), emptyList());
     }
 }
