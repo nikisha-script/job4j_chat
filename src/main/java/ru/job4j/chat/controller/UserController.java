@@ -15,6 +15,7 @@ import ru.job4j.chat.serivce.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> save(@RequestBody User user) {
+    public ResponseEntity<User> save(@Valid @RequestBody User user) {
         Optional<User> tempUser = service.findUserByLogin(user.getLogin());
         if (tempUser.isPresent()) {
             throw new UserByLoginExistsException("user with this login already exists");

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
@@ -21,6 +22,7 @@ public class Message {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @NotBlank(message = "text must be not empty")
     private String text;
 
     @ManyToOne(fetch = FetchType.EAGER)

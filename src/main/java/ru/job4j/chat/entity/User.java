@@ -4,6 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -16,12 +20,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @NotNull(message = "Id must be non null")
     private Long id;
 
+    @NotBlank(message = "login must be not empty")
+    @Min(value = 3, message = "login must be more than 3")
     private String login;
 
+    @NotBlank(message = "password must be not empty")
+    @Min(value = 3, message = "password must be more than 3")
     private String password;
 
+    @Email
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
