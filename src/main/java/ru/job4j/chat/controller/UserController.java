@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.entity.User;
 import ru.job4j.chat.exception.UserByLoginExistsException;
 import ru.job4j.chat.exception.UserNotFoundException;
-import ru.job4j.chat.model.UserDto;
 import ru.job4j.chat.serivce.UserService;
 
 import javax.servlet.http.HttpServletRequest;
