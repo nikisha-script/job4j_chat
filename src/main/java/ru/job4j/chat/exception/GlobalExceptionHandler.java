@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ public class GlobalExceptionHandler {
         this.objectMapper = objectMapper;
     }
 
-    @ExceptionHandler(value = {RoleByNameExistsException.class, NullPointerException.class})
+    @ExceptionHandler(value = {RoleByNameExistsException.class, NullPointerException.class, InvocationTargetException.class})
     public void handleException(Error error,
                                 HttpServletRequest request,
                                 HttpServletResponse response) throws IOException {

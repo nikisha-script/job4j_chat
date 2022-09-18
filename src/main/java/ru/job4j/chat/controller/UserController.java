@@ -6,17 +6,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.entity.User;
 import ru.job4j.chat.exception.UserByLoginExistsException;
 import ru.job4j.chat.exception.UserNotFoundException;
+import ru.job4j.chat.model.UserDto;
 import ru.job4j.chat.serivce.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -61,6 +64,15 @@ public class UserController {
                 service.save(user),
                 HttpStatus.CREATED
         );
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> patch(@Valid @RequestBody User user) throws InvocationTargetException, IllegalAccessException {
+        if (user.getPassword() != null) {
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
+        service.patch(user);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/auth")
